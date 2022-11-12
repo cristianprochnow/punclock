@@ -51,12 +51,22 @@ class Screen
     // Desenha a linha da esquerda.
     for (int row = initialRow; row < finalRow; row++)
     {
-      this.write(initialColumn, row, "|");
+      string character = "|";
+      if (row == initialRow || row == (finalRow - 1)) {
+        character = "+";
+      }
+
+      this.write(initialColumn, row, character);
     }
     // Desenha a linha da direita.
     for (int row = initialRow; row < finalRow; row++)
     {
-      this.write(finalColumn, row, "|");
+      string character = "|";
+      if (row == initialRow || row == (finalRow - 1)) {
+        character = "+";
+      }
+
+      this.write(finalColumn, row, character);
     }
   }
 
