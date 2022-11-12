@@ -16,6 +16,8 @@ class Screen
     }
   }
 
+  public int InitialColumn = 0;
+
   public Screen()
   {
     this.background = ConsoleColor.Black;
@@ -30,6 +32,11 @@ class Screen
     Console.ForegroundColor = this.color;
 
     Console.Clear();
+  }
+
+  public void customInitialColumn(int startPoint)
+  {
+    this.InitialColumn = startPoint;
   }
 
   public void buildFrame(int initialColumn, int initialRow, int finalColumn, int finalRow)

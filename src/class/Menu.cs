@@ -1,7 +1,15 @@
 class Menu
 {
-  private Screen screen = new Screen();
+  private Screen screen;
   private List<string> options = new List<string>();
+  private int lastRow = 0;
+  public int lastColumn = 0;
+  public int questionRow = 0;
+
+  public Menu(Screen screen)
+  {
+    this.screen = screen;
+  }
 
   public void add(string option)
   {
@@ -57,8 +65,37 @@ class Menu
 
       row++;
     }
+
+    this.lastRow = row;
+    this.lastColumn = menuWidth;
+
+    this.screen.customInitialColumn(menuWidth + 1);
   }
 
-  public void choose()
-  {}
+  private void clearAnswer(int initialColumn, int finalColumn)
+  {
+    for (int counter = initialColumn; counter < finalColumn; counter++)
+    {
+      this.screen.write(counter, this.questionRow, " ");
+    }
+  }
+
+  public string choose()
+  {
+    string message = "O que deseja fazer: ";
+
+    int row = this.lastRow + 1;
+    this.questionRow = row;
+
+    this.clearAnswer(message.Length + 1, this.lastColumn);
+
+    this.screen.write(2, row, message);
+    string? answer = Console.ReadLine();
+
+    if (answer == null) {
+      answer = "";
+    }
+
+    return answer;
+  }
 }
