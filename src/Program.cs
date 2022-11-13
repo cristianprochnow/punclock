@@ -1,5 +1,6 @@
 ﻿Screen screen = new Screen();
 Menu menu = new Menu(screen);
+Help help = new Help(screen);
 
 // Constrói uma janela que preenche o espaço inteiro disponível.
 screen.buildFrame(0, 0, screen.WindowWidth, screen.WindowHeight);
@@ -33,7 +34,8 @@ while (true) {
 
   }
   else if (answer == "H") {
-
+    screen.clearFrame(screen.InitialColumn, 0, screen.WindowWidth, screen.WindowHeight);
+    help.list();
   }
   else if (answer == "Q") {
     break;

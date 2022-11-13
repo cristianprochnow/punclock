@@ -26,6 +26,22 @@ class Screen
     this.setUpScreen();
   }
 
+  public void clearFrame(int initialColumn, int initialRow, int finalColumn, int finalRow)
+  {
+    initialColumn++;
+    initialRow++;
+    finalColumn--;
+    finalRow--;
+
+    for (int column = initialColumn; column < finalColumn; column++)
+    {
+      for (int row = initialRow; row < finalRow; row++)
+      {
+        this.write(column, row, " ");
+      }
+    }
+  }
+
   private void setUpScreen()
   {
     Console.BackgroundColor = this.background;
