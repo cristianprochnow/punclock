@@ -1,6 +1,5 @@
 ﻿Screen screen = new Screen();
 Menu menu = new Menu(screen);
-Help help = new Help(screen);
 
 // Constrói uma janela que preenche o espaço inteiro disponível.
 screen.buildFrame(0, 0, screen.WindowWidth, screen.WindowHeight);
@@ -13,6 +12,9 @@ menu.add("Ajuda [H]");
 menu.add("Sair [Q]");
 menu.show();
 
+Form form = new Form(screen);
+AppointmentController appointmentController = new AppointmentController(screen, form);
+
 while (true) {
   string answer = menu.choose();
 
@@ -22,7 +24,8 @@ while (true) {
   answer = answer.ToUpper();
 
   if (answer == "C") {
-    screen.write(screen.InitialColumn, 4, "Show demais");
+    screen.clearFrame(screen.InitialColumn, 0, screen.WindowWidth, screen.WindowHeight);
+    appointmentController.add();
   }
   else if (answer == "R") {
 
@@ -34,6 +37,8 @@ while (true) {
 
   }
   else if (answer == "H") {
+    Help help = new Help(screen);
+
     screen.clearFrame(screen.InitialColumn, 0, screen.WindowWidth, screen.WindowHeight);
     help.list();
   }

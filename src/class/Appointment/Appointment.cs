@@ -7,8 +7,6 @@ class Appointment
   public DateTime moment;
   public string date;
   public string time;
-  public DateTime startMoment;
-  public string startDate;
   public string startTime;
 
   public Appointment(
@@ -16,21 +14,17 @@ class Appointment
     string name,
     string company,
     bool isExtraWork,
-    DateTime moment,
-    DateTime startMoment
+    string startHour
   ) {
-    string dateFormat = "dd/MM/yyyy";
-    string timeFormat = "H:mm:ss";
+    DateTime now = DateTime.Now;
 
     this.client = client;
     this.name = name;
     this.company = company;
     this.isExtraWork = isExtraWork;
-    this.moment = moment;
-    this.date = this.moment.ToString(dateFormat);
-    this.time = this.moment.ToString(timeFormat);
-    this.startMoment = startMoment;
-    this.startDate = this.startMoment.ToString(dateFormat);
-    this.startTime = this.startMoment.ToString(timeFormat);
+    this.moment = DateTimeHelper.getNow();
+    this.date = DateTimeHelper.getDateNow();
+    this.time = DateTimeHelper.getTimeNow();
+    this.startTime = startHour;
   }
 }

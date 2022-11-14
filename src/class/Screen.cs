@@ -98,4 +98,21 @@ class Screen
     Console.SetCursorPosition(column, row);
     Console.Write(content);
   }
+
+  public string ask(int column, int row, string question)
+  {
+    string? response;
+
+    this.write(column, row, question);
+    row++;
+    this.write(column, row, "→");
+    Console.SetCursorPosition(column + 2, row);
+    response = Console.ReadLine();
+
+    if (response == null) {
+      response = "";
+    }
+
+    return response;
+  }
 }
