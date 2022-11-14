@@ -1,5 +1,6 @@
 ﻿Screen screen = new Screen();
 Menu menu = new Menu(screen);
+AppointmentController appointmentController = new AppointmentController(screen);
 
 // Constrói uma janela que preenche o espaço inteiro disponível.
 screen.buildFrame(0, 0, screen.WindowWidth, screen.WindowHeight);
@@ -12,8 +13,6 @@ menu.add("Ajuda [H]");
 menu.add("Sair [Q]");
 menu.show();
 
-Form form = new Form(screen);
-AppointmentController appointmentController = new AppointmentController(screen, form);
 
 while (true) {
   string answer = menu.choose();
