@@ -27,7 +27,8 @@ while (true) {
     appointmentController.add();
   }
   else if (answer == "R") {
-
+    screen.clearFrame(screen.InitialColumn, 0, screen.WindowWidth, screen.WindowHeight);
+    appointmentController.list();
   }
   else if (answer == "U") {
 

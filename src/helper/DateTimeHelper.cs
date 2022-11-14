@@ -1,7 +1,8 @@
 class DateTimeHelper
 {
   static public string dateFormat = "dd/MM/yyyy";
-  static public string timeFormat = "H:mm:ss";
+  // static public string timeFormat = "H:mm:ss";
+  static public string timeFormat = "H:mm";
 
   static public DateTime getNow()
   {

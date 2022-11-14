@@ -8,8 +8,10 @@ class Appointment
   public string date;
   public string time;
   public string startTime;
+  public int id;
 
   public Appointment(
+    int id,
     string client,
     string name,
     string company,
@@ -18,6 +20,7 @@ class Appointment
   ) {
     DateTime now = DateTime.Now;
 
+    this.id = id;
     this.client = client;
     this.name = name;
     this.company = company;

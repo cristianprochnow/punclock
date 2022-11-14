@@ -18,6 +18,8 @@ class AppointmentController
     string label;
     int column;
 
+    int id = this.appointments.Count + 1;
+
     label = "Data: ";
     column = initialColumn;
     this.screen.write(column, initialRow, label);
@@ -43,10 +45,10 @@ class AppointmentController
 
     bool isExtraWork = (flgExtraWork.ToUpper() == "S");
 
-    Appointment appointment = new Appointment(client, name, company, isExtraWork, startHour);
+    Appointment appointment = new Appointment(id, client, name, company, isExtraWork, startHour);
 
     initialRow += count;
-    this.screen.write(initialColumn, initialRow, "→ Cadastro realizado com sucesso!");
+    this.screen.write(initialColumn, initialRow, "→ Cadastro realizado com sucesso! =]");
 
     return appointment;
   }
@@ -62,6 +64,53 @@ class AppointmentController
 
   public void list()
   {
+    /*
+      id
+      name
+      client
+      company
+      date
+      startTime
+      time
+    */
 
+    int initialColumn = this.screen.InitialColumn + 1;
+    int initialRow = 1;
+    string content;
+
+    if (this.appointments.Count == 0) {
+      this.screen.write(initialColumn, initialRow, "Nenhum registro encontrado! =/");
+      return;
+    }
+
+    foreach (Appointment appointment in this.appointments)
+    {
+      content = appointment.id.ToString();
+      this.screen.write(initialColumn, initialRow, content);
+
+      initialColumn += content.Length;
+      content = appointment.name.ToString();
+      this.screen.write(initialColumn, initialRow, content);
+
+      initialColumn += content.Length;
+      content = appointment.company.ToString();
+      this.screen.write(initialColumn, initialRow, content);
+
+      initialColumn += content.Length;
+      content = appointment.date.ToString();
+      this.screen.write(initialColumn, initialRow, content);
+
+      initialColumn += content.Length;
+      content = appointment.startTime.ToString();
+      this.screen.write(initialColumn, initialRow, content);
+
+      initialColumn += content.Length;
+      content = appointment.time.ToString();
+      this.screen.write(initialColumn, initialRow, content);
+
+      initialColumn += content.Length;
+      content = (appointment.isExtraWork) ? "X" : "";
+      this.screen.write(initialColumn, initialRow, content);
+    }
   }
 }
