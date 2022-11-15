@@ -10,13 +10,15 @@ This app is inspired by the act of "Punch the Clock", where you can insert your 
 To run this app, before you need to install `.NET` in your PC. It can be done following [this link](https://dotnet.microsoft.com/en-us/download).
 
 ### Run
+Run these commands in your terminal or command prompt.
 ```bash
-git clone https://github.com/cristianprochnow/punclock.git
+→ git clone https://github.com/cristianprochnow/punclock.git
 
-cd punclock/
+→ cd punclock/
 
-dotnet run
+→ dotnet run
 ```
 
 ## Built with
-- [x] C#
+- [x] `C#`
+- [x] `.NET`
