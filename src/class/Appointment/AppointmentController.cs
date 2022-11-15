@@ -3,13 +3,33 @@ class AppointmentController
   public List<Appointment> appointments = new List<Appointment>();
   private AppointmentTableWidth appointmentTableWidth = new AppointmentTableWidth();
   private Screen screen;
+  private int key = new Random().Next();
+  private int position;
 
   public AppointmentController(Screen screen)
   {
     this.screen = screen;
+    this.position = this.key;
+
+    this.appointments.Add(new Appointment(
+      this.appointments.Count + 1,
+      "Show Demais",
+      "Ainda Melhor",
+      "Topzera",
+      true,
+      "17:56"
+    ));
+    this.appointments.Add(new Appointment(
+      this.appointments.Count + 1,
+      "Ainda Melhor que Antes",
+      "Outra Versão",
+      "Não Acredito",
+      false,
+      "19:20"
+    ));
   }
 
-  private Appointment createForm()
+  private Appointment createForm(Appointment? editionAppointment = null)
   {
     int initialColumn = this.screen.InitialColumn + 1;
     int initialRow = 1;
@@ -20,6 +40,9 @@ class AppointmentController
     int column;
 
     int id = this.appointments.Count + 1;
+    if (editionAppointment != null) {
+      id = editionAppointment.id;
+    }
 
     label = "Data: ";
     column = initialColumn;
@@ -34,13 +57,29 @@ class AppointmentController
 
     int count = 3;
     initialRow += count;
-    string name = this.screen.ask(initialColumn, initialRow, "Seu nome");
+    label = "Seu nome";
+    if (editionAppointment != null) {
+      label += " ("+editionAppointment.name+") ";
+    }
+    string name = this.screen.ask(initialColumn, initialRow, label);
     initialRow += count;
-    string company = this.screen.ask(initialColumn, initialRow, "Prestador de Serviço");
+    label = "Prestador de Serviço";
+    if (editionAppointment != null) {
+      label += " ("+editionAppointment.company+") ";
+    }
+    string company = this.screen.ask(initialColumn, initialRow, label);
     initialRow += count;
-    string client = this.screen.ask(initialColumn, initialRow, "Clinte do Serviço");
+    label = "Cliente do Serviço";
+    if (editionAppointment != null) {
+      label += " ("+editionAppointment.client+") ";
+    }
+    string client = this.screen.ask(initialColumn, initialRow, label);
     initialRow += count;
-    string startHour = this.screen.ask(initialColumn, initialRow, "Hora Inicial do Serviço");
+    label = "Hora Inicial do Serviço";
+    if (editionAppointment != null) {
+      label += " ("+editionAppointment.startTime+") ";
+    }
+    string startHour = this.screen.ask(initialColumn, initialRow, label);
     initialRow += count;
     string flgExtraWork = this.screen.ask(initialColumn, initialRow, "É hora extra? (S/N)");
 
@@ -56,6 +95,8 @@ class AppointmentController
 
   public Appointment add()
   {
+    this.clear();
+
     Appointment appointment = this.createForm();
 
     this.appointments.Add(appointment);
@@ -99,6 +140,7 @@ class AppointmentController
 
   public void list()
   {
+    this.clear();
     this.setTableWidth();
 
     int defaultInitialColumn = this.screen.InitialColumn + 1;
@@ -198,6 +240,68 @@ class AppointmentController
       initialColumn += this.appointmentTableWidth.time + defaultGap;
       content = (appointment.isExtraWork) ? "X" : "";
       this.screen.write(initialColumn, initialRow, content);
+    }
+  }
+
+  public string askChange(string ask)
+  {
+    int initialColumn = this.screen.InitialColumn - 1;
+
+    this.list();
+    this.screen.buildFrame(
+      initialColumn,
+      this.screen.WindowHeight - 4,
+      this.screen.WindowWidth,
+      this.screen.WindowHeight
+    );
+    string answer = this.screen.ask(initialColumn + 2, this.screen.WindowHeight - 3, ask);
+
+    return answer;
+  }
+
+  private void clear()
+  {
+    this.screen.clearFrame(this.screen.InitialColumn, 0, this.screen.WindowWidth, this.screen.WindowHeight);
+  }
+
+  public void update()
+  {
+    this.clear();
+
+    int initialColumn = this.screen.InitialColumn - 1;
+
+    this.list();
+    this.screen.buildFrame(
+      initialColumn,
+      this.screen.WindowHeight - 4,
+      this.screen.WindowWidth,
+      this.screen.WindowHeight
+    );
+    string answer = this.askChange("Insira o ID do registro que deseja editar");
+
+    this.get(Convert.ToInt32(answer));
+
+    if (this.position == this.key) {
+      this.screen.write(initialColumn + 2, this.screen.WindowHeight - 5, "Registro não encontrado! =/");
+      return;
+    }
+
+    this.clear();
+    this.appointments[this.position] = this.createForm(this.appointments[this.position]);
+    this.position = this.key;
+  }
+
+  public void get(int id)
+  {
+    for (int counter = 0; counter < this.appointments.Count; counter++)
+    {
+      Appointment appointment = this.appointments[counter];
+
+      if (appointment.id == id) {
+        this.position = counter;
+
+        break;
+      }
     }
   }
 }

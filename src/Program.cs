@@ -23,15 +23,13 @@ while (true) {
   answer = answer.ToUpper();
 
   if (answer == "C") {
-    screen.clearFrame(screen.InitialColumn, 0, screen.WindowWidth, screen.WindowHeight);
     appointmentController.add();
   }
   else if (answer == "R") {
-    screen.clearFrame(screen.InitialColumn, 0, screen.WindowWidth, screen.WindowHeight);
     appointmentController.list();
   }
   else if (answer == "U") {
-
+    appointmentController.update();
   }
   else if (answer == "D") {
 
