@@ -1,6 +1,7 @@
 class AppointmentController
 {
   public List<Appointment> appointments = new List<Appointment>();
+  private AppointmentTableWidth appointmentTableWidth = new AppointmentTableWidth();
   private Screen screen;
 
   public AppointmentController(Screen screen)
@@ -62,19 +63,47 @@ class AppointmentController
     return appointment;
   }
 
+  private void setTableWidth()
+  {
+    foreach (Appointment appointment in this.appointments)
+    {
+      if (appointment.id.ToString().Length >= this.appointmentTableWidth.id) {
+        this.appointmentTableWidth.id = appointment.id.ToString().Length;
+      }
+
+      if (appointment.name.Length >= this.appointmentTableWidth.name) {
+        this.appointmentTableWidth.name = appointment.name.Length;
+      }
+
+      if (appointment.client.Length >= this.appointmentTableWidth.client) {
+        this.appointmentTableWidth.client = appointment.client.Length;
+      }
+
+      if (appointment.company.Length >= this.appointmentTableWidth.company) {
+        this.appointmentTableWidth.company = appointment.company.Length;
+      }
+
+      if (appointment.date.Length >= this.appointmentTableWidth.date) {
+        this.appointmentTableWidth.date = appointment.date.Length;
+      }
+
+      if (appointment.time.Length >= this.appointmentTableWidth.time) {
+        this.appointmentTableWidth.time = appointment.time.Length;
+      }
+
+      if (appointment.startTime.Length >= this.appointmentTableWidth.startTime) {
+        this.appointmentTableWidth.startTime = appointment.startTime.Length;
+      }
+    }
+  }
+
   public void list()
   {
-    /*
-      id
-      name
-      client
-      company
-      date
-      startTime
-      time
-    */
+    this.setTableWidth();
 
-    int initialColumn = this.screen.InitialColumn + 1;
+    int defaultInitialColumn = this.screen.InitialColumn + 1;
+    int defaultGap = 4;
+    int initialColumn = defaultInitialColumn;
     int initialRow = 1;
     string content;
 
@@ -83,32 +112,90 @@ class AppointmentController
       return;
     }
 
+    string label;
+
+    label = "ID";
+    this.screen.write(initialColumn, initialRow, label);
+
+    if (this.appointmentTableWidth.id <= label.Length) {
+      this.appointmentTableWidth.id = label.Length;
+    }
+
+    label = "NOME";
+    initialColumn += this.appointmentTableWidth.id + defaultGap;
+    this.screen.write(initialColumn, initialRow, label);
+
+    if (this.appointmentTableWidth.name <= label.Length) {
+      this.appointmentTableWidth.name = label.Length;
+    }
+
+    label = "COMPANHIA";
+    initialColumn += this.appointmentTableWidth.name + defaultGap;
+    this.screen.write(initialColumn, initialRow, label);
+
+    if (this.appointmentTableWidth.company <= label.Length) {
+      this.appointmentTableWidth.company = label.Length;
+    }
+
+    label = "DATA";
+    initialColumn += this.appointmentTableWidth.company + defaultGap;
+    this.screen.write(initialColumn, initialRow, label);
+
+    if (this.appointmentTableWidth.date <= label.Length) {
+      this.appointmentTableWidth.date = label.Length;
+    }
+
+    label = "HORA INÍCIO";
+    initialColumn += this.appointmentTableWidth.date + defaultGap;
+    this.screen.write(initialColumn, initialRow, label);
+
+    if (this.appointmentTableWidth.startTime <= label.Length) {
+      this.appointmentTableWidth.startTime = label.Length;
+    }
+
+    label = "HORA FIM";
+    initialColumn += this.appointmentTableWidth.startTime + defaultGap;
+    this.screen.write(initialColumn, initialRow, label);
+
+    if (this.appointmentTableWidth.time <= label.Length) {
+      this.appointmentTableWidth.time = label.Length;
+    }
+
+    label = "HORA EXTRA";
+    initialColumn += this.appointmentTableWidth.time + defaultGap;
+    this.screen.write(initialColumn, initialRow, "HORA EXTRA");
+
+    initialRow++;
+
     foreach (Appointment appointment in this.appointments)
     {
+      initialRow++;
+      initialColumn = defaultInitialColumn;
+
       content = appointment.id.ToString();
       this.screen.write(initialColumn, initialRow, content);
 
-      initialColumn += content.Length;
+      initialColumn += this.appointmentTableWidth.id + defaultGap;
       content = appointment.name.ToString();
       this.screen.write(initialColumn, initialRow, content);
 
-      initialColumn += content.Length;
+      initialColumn += this.appointmentTableWidth.name + defaultGap;
       content = appointment.company.ToString();
       this.screen.write(initialColumn, initialRow, content);
 
-      initialColumn += content.Length;
+      initialColumn += this.appointmentTableWidth.company + defaultGap;
       content = appointment.date.ToString();
       this.screen.write(initialColumn, initialRow, content);
 
-      initialColumn += content.Length;
+      initialColumn += this.appointmentTableWidth.date + defaultGap;
       content = appointment.startTime.ToString();
       this.screen.write(initialColumn, initialRow, content);
 
-      initialColumn += content.Length;
+      initialColumn += this.appointmentTableWidth.startTime + defaultGap;
       content = appointment.time.ToString();
       this.screen.write(initialColumn, initialRow, content);
 
-      initialColumn += content.Length;
+      initialColumn += this.appointmentTableWidth.time + defaultGap;
       content = (appointment.isExtraWork) ? "X" : "";
       this.screen.write(initialColumn, initialRow, content);
     }
