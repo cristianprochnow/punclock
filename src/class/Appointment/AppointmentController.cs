@@ -4,29 +4,34 @@ class AppointmentController
   private AppointmentTableWidth appointmentTableWidth = new AppointmentTableWidth();
   private Screen screen;
   private int key = new Random().Next();
+  private int lastId = 0;
   private int position;
 
   public AppointmentController(Screen screen)
   {
     this.screen = screen;
     this.position = this.key;
+    int id = this.lastId;
 
+    id++;
     this.appointments.Add(new Appointment(
-      this.appointments.Count + 1,
+      id,
       "Show Demais",
       "Ainda Melhor",
       "Topzera",
       true,
       "17:56"
     ));
+    id++;
     this.appointments.Add(new Appointment(
-      this.appointments.Count + 1,
+      id,
       "Ainda Melhor que Antes",
       "Outra Versão",
       "Não Acredito",
       false,
       "19:20"
     ));
+    this.lastId = id;
   }
 
   private Appointment createForm(Appointment? editionAppointment = null)
@@ -39,9 +44,13 @@ class AppointmentController
     string label;
     int column;
 
-    int id = this.appointments.Count + 1;
+    int id = this.lastId;
     if (editionAppointment != null) {
       id = editionAppointment.id;
+    }
+    else {
+      id++;
+      this.lastId = id;
     }
 
     label = "Data: ";
@@ -88,7 +97,9 @@ class AppointmentController
     Appointment appointment = new Appointment(id, client, name, company, isExtraWork, startHour);
 
     initialRow += count;
-    this.screen.write(initialColumn, initialRow, "→ Cadastro realizado com sucesso! =]");
+    if (editionAppointment == null) {
+      this.screen.write(initialColumn, initialRow, "→ Cadastro realizado com sucesso! =]");
+    }
 
     return appointment;
   }
@@ -264,20 +275,21 @@ class AppointmentController
     this.screen.clearFrame(this.screen.InitialColumn, 0, this.screen.WindowWidth, this.screen.WindowHeight);
   }
 
-  public void update()
+  public void update(bool delete = false)
   {
     this.clear();
 
     int initialColumn = this.screen.InitialColumn - 1;
+    string operation;
 
     this.list();
-    this.screen.buildFrame(
-      initialColumn,
-      this.screen.WindowHeight - 4,
-      this.screen.WindowWidth,
-      this.screen.WindowHeight
-    );
-    string answer = this.askChange("Insira o ID do registro que deseja editar");
+    if (delete) {
+      operation = "excluir";
+    }
+    else {
+      operation = "editar";
+    }
+    string answer = this.askChange("Insira o ID do registro que deseja "+operation);
 
     this.get(Convert.ToInt32(answer));
 
@@ -286,8 +298,16 @@ class AppointmentController
       return;
     }
 
-    this.clear();
-    this.appointments[this.position] = this.createForm(this.appointments[this.position]);
+    if (delete) {
+      operation = "Exclusão";
+      this.appointments.RemoveAt(this.position);
+    }
+    else {
+      operation = "Edição";
+      this.clear();
+      this.appointments[this.position] = this.createForm(this.appointments[this.position]);
+    }
+    this.screen.write(initialColumn + 2, this.screen.WindowHeight - 5, operation+" realizada com sucesso! =]");
     this.position = this.key;
   }
 

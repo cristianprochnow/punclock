@@ -32,7 +32,7 @@ while (true) {
     appointmentController.update();
   }
   else if (answer == "D") {
-
+    appointmentController.update(true);
   }
   else if (answer == "H") {
     Help help = new Help(screen);
